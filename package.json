@@ -1,0 +1,20 @@
+{
+  "name": "horn",
+  "version": "0.0.1",
+  "description": "Any Module Defintion Transformer",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:one-request/horn.git"
+  },
+  "keywords": [
+    "AMD",
+    "CMD",
+    "XMD"
+  ],
+  "author": "cenan.chr",
+  "license": "MIT"
+}
