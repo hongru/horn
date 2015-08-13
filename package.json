@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.alibaba-inc.com:one-request/horn.git"
+    "url": "git@github.com:hongru/horn.git"
   },
   "keywords": [
     "httpserver",
