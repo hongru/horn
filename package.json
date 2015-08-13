@@ -1,6 +1,6 @@
 {
   "name": "horn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple configaration HTTPServer with features as flex-combo proxy, file local map, request mock and so on",
   "main": "lib/horn.js",
   "bin": {
