@@ -165,6 +165,10 @@ module.exports = {
 
 同时，可以解开cdncombo做文件的单独代理，例如第二个script里面一个cdncombo链接里面combo了好几个js文件，但是`hornfile.js` 中 LocalMap只配置了`env.js` 有映射关系，所以会在解开cdncombo链接的基础上，只映射env.js匹配的文件，其他没有匹配的仍然回溯到线上。
 
+![img](http://gw.alicdn.com/tfscom/TB1QVIRIVXXXXXyapXX7oFIHXXX-1876-278.png_760x760s150.jpg)
+
+![img](http://gw.alicdn.com/tfscom/TB1kfE1IVXXXXXCXVXXkAC7FVXX-1874-620.png_760x760s150.jpg)
+
 `hornfile.js` 中除了配置 `localMap`外，自然也支持所有静态HTTP Server 可配的参数，比如：
 
 ```
