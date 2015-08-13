@@ -1,0 +1,172 @@
+function getUrlParam(key) {
+    var reg = new RegExp('[?|&]' + key + '=([^&]+)');
+    var match = location.search.match(reg);
+    return match && match[1];
+}
+
+/*先通过参数来获取是否需要显示选品按钮*/
+if (getUrlParam('hasSelect') == 'true') {
+    $('#dialog-collector .select-row').show();
+}
+
+/**
+ * 统一api请求
+ * @param  {[type]}   api  [description]
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @param  {[type]}   v    [description]
+ * @return {[type]}        [description]
+ */
+function httpAPI(api, data, cb, v) {
+    $.getJSON('/tools/mtop', {
+        'api': api || '',
+        'v': v || '1.0',
+        'data': data || '{}'
+    }, function(resp) {
+        cb && cb(resp);
+    });
+}
+
+/**
+ * 渲染filter筛选
+ * @param  {[type]} result [description]
+ * @return {[type]}        [description]
+ */
+function dataTableFilterRender(result) {
+    var _renderSelect = function(label, name, value) {
+        var elementHtml = '<li><label>' + label + ':</label><select name="' + name + '" id="' + name + '">';
+        value.forEach(function(item) {
+            elementHtml += '<option value="' + item.value + '">' + item.name + '</option>';
+        });
+        elementHtml += '</select></li>';
+        return elementHtml;
+    }
+    var _renderCheckbox = function() {
+
+    }
+    var _renderInput = function(label, elementName) {
+        var elementHtml = '<li><label>' + label + ':</label><input type="text" name="'+elementName+'"/>';
+        return elementHtml;
+    }
+
+    var _renderDate = function(label, elementName) {
+        var elementHtml = '<li><label>' + label + ':</label><input type="date"/>';
+        return elementHtml;
+    }
+    var _renderHidden = function(label, elementName, value){
+        var elementHtml = '<li><input type="hidden" name="'+elementName+'" value="'+value+'"/></li>';
+        return elementHtml;
+    }
+
+    var formElement = function(type, label, elementName, valdata) {
+        var elementHtml = '';
+        switch (type) {
+            case 'select':
+                elementHtml = _renderSelect(label, elementName, valdata);
+                break;
+            case 'checkbox':
+                elementHtml = _renderCheckbox(label, elementName, valdata);
+                break;
+            case 'text':
+                elementHtml = _renderInput(label, elementName, valdata);
+                break;
+            case 'date':
+                elementHtml = _renderDate(label, elementName);
+                break;
+            case 'hidden':
+                elementHtml = _renderHidden(label,elementName, valdata);
+                break;
+        }
+        return elementHtml;
+    }
+
+    var elementsHtml = [];
+    for (var key in result) {
+        var elementName = key;
+        var elementData = result[key].data;
+        var type = result[key].type;
+        var label = result[key].title;
+        elementsHtml.push(formElement(type, label, elementName, elementData));
+    };
+    elementsHtml.push('<button class="submitFilter" type="submit">筛选</button>');
+    $('#sortCondition').html(elementsHtml.join(''));
+
+}
+
+
+
+/**
+ * 初始化table,下方代码开始配置
+ * @type {[type]}
+ */
+var dataTableForMT = window.dataTableForMT;
+dataTableForMT.init({
+    ajaxURL: 'mtop.toufang.qianggou.queryItems',
+    ajaxParams: '',
+    datas: [], //初始化data table，datas传入[]
+    columns: dtGridColumns,
+    pageSize: 20,
+    tools: '',
+    onCheck: function(isChecked, record, grid, dataNo, row, extraCell, e) {},
+    onRowDblClick: function(value, record, column, grid, dataNo, columnNo, cell, row, extraCell, e) {
+        console.log(value);
+    }
+});
+
+
+///**入口文件，用于点击从数据接口取数据的操作
+function selectRenderCondition(activityStartTime) {
+    $('#selectLayout').show();
+    $('#sortRow #sortCondition').hide();
+    if (!$('#sortRow .date-condition').length) {
+        $('#sortRow').prepend('<div class="date-condition"><label>活动日期</label><input type="date" class="date-condition-input"/><button id="dateConditionBtn">获取选中日期的筛选条件</button></div>');
+        $('#sortRow #dateConditionBtn').on('click', function(e) {
+            e.preventDefault();
+            $('#sortRow #dateConditionBtn').hide();
+            $('#sortRow #sortCondition').show();
+            var activityStartTime = $('#sortRow input').val();
+            var queryTimeStr = activityStartTime ? activityStartTime + ' 00:00:00' : ''
+            queryCondition(queryTimeStr);
+        });
+        $('#sortRow .date-condition-input').on('change',function(){
+            $('#sortRow #dateConditionBtn').show();
+        })
+    }
+}
+function queryCondition(activityStartTime) {
+    var params = JSON.stringify({
+        'activityStartTime': activityStartTime || ''
+    });
+
+    httpAPI('mtop.toufang.qianggou.getQueryItemsCondition', params, function(resp) {
+        var result = resp.data;
+        if (result) {
+            result.timeCondition = {};
+            result.activityStartTime = {
+                'type':'hidden',
+                'data': activityStartTime
+            };
+            dataTableFilterRender(result);
+        }
+    });
+}
+
+
+$('#sortCondition').on("submit", function(e) {
+    e.preventDefault();
+    var params = $(this).serializeArray();
+    console.log(params);
+    var obj = {};
+    params.forEach(function(param) {
+        obj[param.name] = param.value;
+    });
+    //load 的url 传入空，则取配置中的接口
+    dataTableForMT.load('', JSON.stringify(obj), function(resp) {
+        var result = resp.data.result;
+        if (result.length) {
+            dataTableForMT.refresh(result);
+        } else {
+            dataTableForMT.destory();
+        }
+    });
+});

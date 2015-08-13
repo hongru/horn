@@ -1,8 +1,11 @@
 {
   "name": "horn",
   "version": "0.0.1",
-  "description": "Any Module Defintion Transformer",
-  "main": "index.js",
+  "description": "simple configaration HTTPServer with features as flex-combo proxy, file local map, request mock and so on",
+  "main": "lib/horn.js",
+  "bin": {
+    "horn": "bin/horn.js"
+  },
   "scripts": {
     "test": "mocha"
   },
@@ -11,10 +14,23 @@
     "url": "git@gitlab.alibaba-inc.com:one-request/horn.git"
   },
   "keywords": [
-    "AMD",
-    "CMD",
-    "XMD"
+    "httpserver",
+    "proxy",
+    "mock"
   ],
-  "author": "cenan.chr",
+  "dependencies": {
+    "he": "^0.5.0",
+    "mime": "^1.2.11",
+    "minimist": "^1.1.0",
+    "url-join": "0.0.1",
+    "colors": "^1.1.2",
+    "union": "^0.4.4",
+    "http-proxy": "^1.11.1",
+    "corser": "^2.0.0",
+    "flex-hosts": "^0.6.0",
+    "flex-combo": "^0.12.12",
+    "commander": "^2.8.1"
+  },
+  "author": "cenan.chr@alibaba-inc.com",
   "license": "MIT"
 }

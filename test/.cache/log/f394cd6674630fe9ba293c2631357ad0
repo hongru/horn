@@ -1,0 +1,54 @@
+/**
+ * 提供codeTable基本的码表对应
+ * resolution对数据格式进行修改返回新的
+ */
+window.dtGridColumns = [{
+    id: 'itemid',
+    title: '商品id'
+}, {
+    id: 'id',
+    title: '抢购id'
+}, {
+    id: 'itempicurl',
+    title: '商品图片',
+    needImport: false,
+    resolution: function(value) {
+        return '<img src="' + value + '_120x120.jpg" style="width:40px;height:40px;"/>';
+    }
+}, {
+    id: 'price',
+    title: '商品价格',
+    needImport: false
+},  {
+    id: 'itemname',
+    title: '商品标题',
+    needImport: false
+},{
+    id: 'saleprice',
+    title: '售价',
+    needImport: false
+}, {
+    id: 'batchtime',
+    title: '开始时间',
+    needImport: false
+}, {
+    id: 'batchendtime',
+    title: '结束时间',
+    extra: true,
+    needImport: false
+}, {
+    id: 'sellerId',
+    title: '商家id',
+    extra: true,
+    needImport: false
+}, {
+    id: 'platform',
+    title: '平台id',
+    extra: true,
+    needImport: false
+}, {
+    id: 'itemType',
+    title: '商品类型',
+    extra: true,
+    needImport: false
+}];

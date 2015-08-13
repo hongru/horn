@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+        <meta name="apple-touch-fullscreen" content="yes"/>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+        <meta content="yes" name="apple-mobile-web-app-capable" />
+        <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <title>demo</title>
+        <link rel="stylesheet" href="//g.alicdn.com/mtb/??lib-flexible/0.3.2/flexible.css" />
+        <script src="//g.alicdn.com/mtb/??lib-flexible/0.3.2/flexible.js"></script>
+        <script src="http://g.tbcdn.cn/mtb/??lib-env/1.5.0/env.js,lib-login/1.4.3/login.js,lib-mtop/1.6.4/mtop.js"></script>
+  </head>
+
+  <body>
+    <script>
+      lib.mtop.request({
+        "api" : "mtop.common.getTimestamp",
+        "v" : "*",
+        "data" : 
+        {
+
+        }
+      },function(res){
+        console.log(res)
+      },
+      function(failObj){
+
+      })
+    </script>
+  </body>
+</html>
