@@ -17,12 +17,9 @@
   <body>
     <script>
       lib.mtop.request({
-        "api" : "mtop.common.getTimestamp",
-        "v" : "*",
-        "data" : 
-        {
-
-        }
+        api: 'mtop.user.getUserSimple',
+            v: '1.0',
+            data : {'isSec' : 0}
       },function(res){
         console.log(res)
       },
